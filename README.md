@@ -1,44 +1,55 @@
-# Detecting Early Alzheimer's Using MRI Data and Machine Learning
 
-## Overview
-This project applies machine learning to MRI data for early Alzheimer's diagnosis. By leveraging multiple classification models, the system aims to detect subtle patterns in brain scans that indicate early-stage Alzheimer’s Disease (AD).
+# 🧠 Detecting Early Alzheimer's Using MRI Data and Machine Learning
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Dataset](#dataset)
-- [Project Workflow](#project-workflow)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Models Used](#models-used)
-- [Evaluation Metrics](#evaluation-metrics)
-- [Results](#results)
-- [Future Improvements](#future-improvements)
-- [License](#license)
+## 📝 Overview
+This project combines neuroimaging data and machine learning to detect early-stage Alzheimer's Disease (AD) from MRI-derived metrics. A suite of classifiers is trained and evaluated to support early diagnosis by identifying structural brain changes and cognitive scores.
 
-## Introduction
-Alzheimer’s disease is a progressive neurodegenerative disorder that affects memory and cognitive functions. Early detection allows for timely intervention and potential treatment planning. In this project, we use MRI scans combined with machine learning models to detect early-stage Alzheimer's.
+---
 
-## Dataset
-- **Source**: MRI scans from a diverse cohort including healthy individuals, mild cognitive impairment (MCI) cases, and AD patients.
-- **Preprocessing**: Includes standardization, skull stripping, alignment, and feature extraction (e.g., hippocampal volume, cortical thickness).
+## 📊 Live Streamlit Demo
 
-## Project Workflow
-1. **Data Collection & Preprocessing** - Cleaning MRI images, normalizing, and extracting features.
-2. **Exploratory Data Analysis (EDA)** - Understanding the dataset and feature distributions.
-3. **Model Training** - Implementing various machine learning models.
-4. **Evaluation** - Comparing performance using key metrics.
-5. **Interpretability & Insights** - Utilizing SHAP values for model explainability.
+Experience the Alzheimer's detection app interactively:
 
-## Technologies Used
-- **Programming Language:** Python
-- **Libraries:** Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, XGBoost, SHAP
+👉 **[Click here to launch the app](https://alzheimer-detection-ml.streamlit.app/)**
 
-## Installation
-To set up the project, follow these steps:
+This interactive web application enables users to enter patient data (e.g., MMSE, brain volume metrics) and instantly see predictions from five ML models. Featuring dark mode, SHAP explanations, and CSV exports — it's built for clinicians, researchers, and learners alike.
+
+---
+
+## 🧠 Dataset
+- **Source**: The OASIS longitudinal MRI dataset.
+- **Samples**: Healthy controls, MCI (mild cognitive impairment), and Alzheimer's patients.
+- **Features**:
+  - Demographic: Age, Gender, Education, SES
+  - Cognitive: MMSE Score
+  - MRI-derived: eTIV, nWBV, ASF
+
+---
+
+## 🔁 Project Workflow
+1. **Data Collection & Cleaning**: Filtering, imputation, standardization.
+2. **EDA**: Visualizing MMSE, brain volumes, age, and SES distributions.
+3. **Feature Engineering**: Normalized brain volume ratios, gender encoding, and SES handling.
+4. **Model Training**: Logistic Regression, SVM, Decision Tree, Random Forest, AdaBoost.
+5. **Evaluation**: Accuracy, Recall, AUC, Confusion Matrices, SHAP.
+6. **Deployment**: Hosted Streamlit app with live prediction and download capability.
+
+---
+
+## ⚙️ Technologies Used
+
+- **Frontend**: Streamlit (with dark mode CSS)
+- **Backend/ML**: 
+  - Python (Pandas, NumPy, Scikit-learn)
+  - Plotly, Seaborn, Matplotlib
+  - Joblib, SHAP, Pickle
+
+---
+
+## 📦 Installation
 
 ```bash
-# Clone the repository
+# Clone the repo
 git clone https://github.com/yourusername/alzheimers-mri-detection.git
 cd alzheimers-mri-detection
 
@@ -46,43 +57,85 @@ cd alzheimers-mri-detection
 pip install -r requirements.txt
 ```
 
-## Usage
-Run the main script to train and evaluate the model:
+---
+
+## 🧪 Usage
+
+To run the backend training pipeline:
 ```bash
 python alzheimers_detection.py
 ```
 
-## Models Used
-- Logistic Regression
-- Support Vector Machines (SVM)
-- Decision Trees
-- Random Forest
-- AdaBoost
+To launch the Streamlit app:
+```bash
+streamlit run app.py
+```
 
-## Evaluation Metrics
-- **Accuracy** - Measures overall correctness.
-- **Recall (Sensitivity)** - Measures the ability to correctly identify AD cases.
-- **AUC (Area Under the ROC Curve)** - Measures discrimination power.
-- **Confusion Matrix** - Visualizes false positives and false negatives.
+Test sample Excel file is available from the app UI for demo inputs.
 
-## Results
-- **Best Model:** Random Forest
-- **Accuracy:** 87%
-- **Sensitivity for early-stage AD:** 78%
-- **Key Features:** Hippocampal volume, cortical thickness
+---
 
-## Future Improvements
-- Integration of deep learning models (CNNs, LSTMs)
-- Using multimodal imaging data (MRI + PET scans)
-- Incorporating genetic and clinical test data
+## 🧮 Models Used
 
-## 🌐 Live Demo
+| Model               | Type         | Strengths                        |
+|--------------------|--------------|----------------------------------|
+| Logistic Regression| Linear       | Simple, interpretable            |
+| SVM                | Non-linear   | Good with margins & kernel trick |
+| Decision Tree      | Tree-based   | Fast, explainable                |
+| Random Forest      | Ensemble     | Robust, high accuracy            |
+| AdaBoost           | Ensemble     | Adaptive learning, boosting weak learners |
 
-Experience the Alzheimer's Detection System in action:
+---
 
-👉 [Click here to try the live Streamlit app](https://alzheimer-detection-ml.streamlit.app/)
+## 📈 Evaluation Metrics
 
-This interactive web application allows users to input MRI-derived patient metrics and view real-time predictions across multiple machine learning models. Whether you're a medical professional, researcher, or curious learner, explore how AI can assist in the early diagnosis of Alzheimer's Disease through an intuitive, dark-themed interface.
+- **Accuracy**: Overall correctness.
+- **Recall (Sensitivity)**: AD detection rate.
+- **AUC**: True vs. false positive trade-off.
+- **F1 Score**: Balance between precision and recall.
+- **Confusion Matrix**: True Positive / False Positive insights.
 
-## License
-This project is licensed under the MIT License. See `LICENSE` for details.
+---
+
+## 📊 Results Summary
+
+| Model            | Accuracy | Recall | AUC   |
+|------------------|----------|--------|-------|
+| Logistic Regression | 80.5%   | 75%    | 0.75  |
+| SVM                 | 81.5%   | 70%    | 0.82  |
+| Decision Tree       | 81.5%   | 65%    | 0.825 |
+| **Random Forest**   | **86.8%** | **80%**  | **0.872** |
+| AdaBoost            | 86.8%   | 65%    | 0.825 |
+
+✅ **Best Performer**: Random Forest – strong balance of accuracy and sensitivity.
+
+---
+
+## 🔮 Future Improvements
+
+- Deep learning integration (e.g., CNNs on raw MRI)
+- Multi-modal data: PET scans, cognitive assessments
+- Genetic and clinical data inclusion
+- Continuous learning via feedback loop
+
+---
+
+## 📄 Sample Input File
+
+The application includes a downloadable Excel file (`alzheimers_test_samples.xlsx`) to test the prediction system with multiple cases in bulk.
+
+---
+
+## 🛡 License
+
+This project is licensed under the **MIT License**. See `LICENSE` for more details.
+
+---
+
+## 🙏 Acknowledgments
+
+Special thanks to the OASIS MRI dataset and contributors, Streamlit community, and the inspiration to apply machine learning for healthcare impact.
+
+---
+
+*Crafted with ❤️ by Sujal Singh*
