@@ -215,6 +215,20 @@ with tab1:
     export_csv = export_df.to_csv(index=False).encode("utf-8")
     st.download_button("📁 Download CSV of Results", export_csv, file_name="alzheimer_prediction_results.csv", mime="text/csv")
 
+    # Download test samples Excel file (local path)
+    try:
+        with open("alzheimers_test_samples.xlsx", "rb") as f:
+            sample_excel_data = f.read()
+
+        st.download_button(
+            label="📄 Download Sample Test Data (Excel)",
+            data=sample_excel_data,
+            file_name="alzheimers_test_samples.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    except FileNotFoundError:
+        st.error("⚠️ Sample test file not found. Please make sure 'alzheimers_test_samples.xlsx' is in the same directory as your app.py.")
+
 with tab2:
     st.header("📈 Model Performance Comparison")
 
