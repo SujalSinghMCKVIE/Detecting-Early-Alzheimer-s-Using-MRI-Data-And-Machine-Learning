@@ -65,18 +65,76 @@ def load_models():
 models, scaler = load_models()
 
 # Sidebar inputs
-st.sidebar.header("🧠 Patient Details")
-input_data = {
-    'M/F': st.sidebar.radio("Gender", ['Male', 'Female'], index=0),
-    'Age': st.sidebar.slider("Age", 50, 100, 70),
-    'EDUC': st.sidebar.slider("Education Years", 1, 23, 12),
-    'SES': st.sidebar.slider("Socioeconomic Status (1-5)", 1, 5, 3),
-    'MMSE': st.sidebar.slider("MMSE Score", 15, 30, 25),
-    'eTIV': st.sidebar.slider("eTIV (mm³)", 800, 2100, 1500),
-    'nWBV': st.sidebar.slider("nWBV Ratio", 0.6, 0.9, 0.75),
-    'ASF': st.sidebar.slider("ASF Ratio", 0.8, 1.5, 1.0)
-}
 
+# Utility function to sync slider and text input
+def synced_slider_input(label, min_val, max_val, default_val, step=0.1, format_func=None, help_text=""):
+    key_slider = f"{label}_slider"
+    key_input = f"{label}_input"
+
+    # Initialize session state only once
+    if key_slider not in st.session_state:
+        st.session_state[key_slider] = default_val
+    if key_input not in st.session_state:
+        st.session_state[key_input] = str(default_val)
+
+    # Update session state when input box changes
+    def on_input_change():
+        try:
+            val = float(st.session_state[key_input])
+            if min_val <= val <= max_val:
+                st.session_state[key_slider] = val
+        except:
+            pass
+
+    # Update session state when slider changes
+    def on_slider_change():
+        st.session_state[key_input] = str(st.session_state[key_slider])
+
+    # Layout: Label, Input box, Slider, Help text in a column (each on a new line)
+    st.sidebar.markdown(f"**{label}:**")
+    st.sidebar.text_input(
+        label="",
+        key=key_input,
+        on_change=on_input_change,
+        label_visibility="collapsed"
+    )
+    st.sidebar.slider(
+        label="",
+        min_value=float(min_val),  # Ensure min_value is a float
+        max_value=float(max_val),  # Ensure max_value is a float
+        value=float(st.session_state[key_slider]),  # Ensure value is a float
+        step=float(step),  # Ensure step is a float
+        key=key_slider,
+        on_change=on_slider_change,
+        format=format_func,
+        label_visibility="collapsed"
+    )
+    st.sidebar.markdown(f"ℹ️ {help_text}", unsafe_allow_html=True)
+
+    return st.session_state[key_slider]
+
+st.sidebar.header("🧠 Patient Details")
+
+gender = st.sidebar.radio("Gender", ['Male', 'Female'], index=0)
+
+age = synced_slider_input("Age", 50, 100, 70, help_text="Age of the patient in years")
+educ = synced_slider_input("Education Years", 1, 23, 12, help_text="Total years of formal education")
+ses = synced_slider_input("Socioeconomic Status", 1, 5, 3, help_text="SES level (1=high, 5=low)")
+mmse = synced_slider_input("MMSE Score", 15, 30, 25, help_text="Mini-Mental State Examination score")
+etiv = synced_slider_input("eTIV", 800, 2100, 1500, help_text="Estimated Total Intracranial Volume (mm³)")
+nwbv = synced_slider_input("nWBV", 0.6, 0.9, 0.75, step=0.01, help_text="Normalized Whole Brain Volume")
+asf = synced_slider_input("ASF", 0.8, 1.5, 1.0, step=0.01, help_text="Atlas Scaling Factor")
+
+input_data = {
+    'M/F': gender,
+    'Age': int(age),
+    'EDUC': int(educ),
+    'SES': int(ses),
+    'MMSE': float(mmse),
+    'eTIV': int(etiv),
+    'nWBV': float(nwbv),
+    'ASF': float(asf)
+}
 # Preprocess input
 input_df = pd.DataFrame([input_data])
 input_df['M/F'] = input_df['M/F'].map({'Male': 1, 'Female': 0})
