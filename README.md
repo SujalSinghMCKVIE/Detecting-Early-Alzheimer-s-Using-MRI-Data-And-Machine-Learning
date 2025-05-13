@@ -76,5 +76,13 @@ python alzheimers_detection.py
 - Using multimodal imaging data (MRI + PET scans)
 - Incorporating genetic and clinical test data
 
+## 🌐 Live Demo
+
+Experience the Alzheimer's Detection System in action:
+
+👉 [Click here to try the live Streamlit app](https://alzheimer-detection-ml.streamlit.app/)
+
+This interactive web application allows users to input MRI-derived patient metrics and view real-time predictions across multiple machine learning models. Whether you're a medical professional, researcher, or curious learner, explore how AI can assist in the early diagnosis of Alzheimer's Disease through an intuitive, dark-themed interface.
+
 ## License
 This project is licensed under the MIT License. See `LICENSE` for details.
