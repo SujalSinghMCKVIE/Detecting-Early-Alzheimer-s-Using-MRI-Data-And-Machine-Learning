@@ -221,13 +221,78 @@ with tab1:
             sample_excel_data = f.read()
 
         st.download_button(
-            label="📄 Download Sample Test Data (Excel)",
+            label="📁 Download Sample Test Data (Excel)",
             data=sample_excel_data,
             file_name="alzheimers_test_samples.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     except FileNotFoundError:
         st.error("⚠️ Sample test file not found. Please make sure 'alzheimers_test_samples.xlsx' is in the same directory as your app.py.")
+    
+    # New section for data summary
+    st.markdown("### 🔍 1. Column-wise Summary")
+    st.markdown("""
+        Below is a general description of key columns in the OASIS Longitudinal dataset:
+        
+        | Feature   | Description                        | Type        | Typical Range/Values |
+        |-----------|------------------------------------|-------------|----------------------|
+        | Subject ID| Unique identifier per person       | Categorical | OAS2_0001, OAS2_0032, ... |
+        | MRI ID    | Unique MRI scan session            | Categorical | OAS2_0001_MR1, etc.   |
+        | Group     | Dementia classification            | Categorical | Nondemented, Demented, Converted |
+        | Visit     | Number of the visit (e.g., 1st, 2nd...) | Integer     | 1 to 5               |
+        | MR Delay  | Days between visit and MRI         | Integer     | 0 to ~2600           |
+        | M/F       | Gender                             | Categorical | M, F                 |
+        | Hand      | Dominant hand                      | Categorical | R (mostly), occasionally L |
+        | Age       | Patient’s age at the time of scan  | Integer     | 60 to 98             |
+        | EDUC      | Years of education                 | Integer     | 6 to 23              |
+        | SES       | Socioeconomic status               | Float       | 1.0 (High) to 5.0 (Low), may have NaNs |
+        | MMSE      | Mini-Mental State Examination score| Float       | 4.0 to 30.0          |
+        | CDR       | Clinical Dementia Rating           | Float       | 0.0, 0.5, 1.0, 2.0  |
+        | eTIV      | Estimated Total Intracranial Volume| Integer     | ~1100 to ~2000       |
+        | nWBV      | Normalized Whole Brain Volume      | Float       | 0.64 to 0.84         |
+        | ASF       | Atlas Scaling Factor               | Float       | 0.88 to 1.59         |
+    """)
+
+    st.markdown("### 📊 2. Value Ranges (from your PDF and code)")
+    st.markdown("""
+        Here’s a quick table of minimum–maximum values as observed in your preprocessing:
+        
+        | Feature  | Min  | Max   | Notes                           |
+        |----------|------|-------|---------------------------------|
+        | Age      | 60   | 98    | Most patients are 70–80         |
+        | EDUC     | 6    | 23    | Avg: ~12–14 years               |
+        | SES      | 1.0  | 5.0   | Often imputed                   |
+        | MMSE     | 4.0  | 30.0  | AD cutoff ~24                   |
+        | CDR      | 0.0  | 2.0   | 0 = no dementia                 |
+        | eTIV     | 1106 | 2004  | Brain volume (mm³)              |
+        | nWBV     | 0.644| 0.837 | Tissue-to-intracranial ratio    |
+        | ASF      | 0.876| 1.587 | Scaling factor for alignment    |
+        | MR Delay | 0    | 2639  | Days from visit to scan         |
+    """)
+
+    st.markdown("### 📈 3. Categorical Features Summary")
+    st.markdown("""
+        | Feature  | Unique Values                         |
+        |----------|---------------------------------------|
+        | Group    | Nondemented, Demented, Converted      |
+        | M/F      | M, F                                  |
+        | Hand     | R (mostly), L                         |
+        | Visit    | 1 to 5                                 |
+    """)
+    # Download OASIS Longitudinal CSV file (local path)
+    try:
+        with open("oasis_longitudinal.csv", "rb") as f:
+            oasis_csv_data = f.read()
+
+        st.download_button(
+            label="📁 Download OASIS Longitudinal Dataset (CSV)",
+            data=oasis_csv_data,
+            file_name="oasis_longitudinal.csv",
+            mime="text/csv"
+        )
+    except FileNotFoundError:
+        st.error("⚠️ OASIS Longitudinal dataset not found. Please make sure 'oasis_longitudinal.csv' is in the same directory as your app.py.")
+
 
 with tab2:
     st.header("📈 Model Performance Comparison")
