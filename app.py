@@ -71,12 +71,6 @@ def synced_slider_input(label, min_val, max_val, default_val, step=0.1, format_f
     key_slider = f"{label}_slider"
     key_input = f"{label}_input"
 
-    # Initialize session state only once
-    if key_slider not in st.session_state:
-        st.session_state[key_slider] = default_val
-    if key_input not in st.session_state:
-        st.session_state[key_input] = str(default_val)
-
     # Update session state when input box changes
     def on_input_change():
         try:
@@ -90,25 +84,31 @@ def synced_slider_input(label, min_val, max_val, default_val, step=0.1, format_f
     def on_slider_change():
         st.session_state[key_input] = str(st.session_state[key_slider])
 
-    # Layout: Label, Input box, Slider, Help text in a column (each on a new line)
+    # Layout: Label, Input box, Slider, Help text
     st.sidebar.markdown(f"**{label}:**")
+
     st.sidebar.text_input(
         label="",
         key=key_input,
+        value=str(default_val) if key_input not in st.session_state else None,
         on_change=on_input_change,
         label_visibility="collapsed"
     )
+
+    slider_val = st.session_state.get(key_slider, default_val)
+
     st.sidebar.slider(
         label="",
-        min_value=float(min_val),  # Ensure min_value is a float
-        max_value=float(max_val),  # Ensure max_value is a float
-        value=float(st.session_state[key_slider]),  # Ensure value is a float
-        step=float(step),  # Ensure step is a float
+        min_value=float(min_val),
+        max_value=float(max_val),
+        value=float(slider_val),
+        step=float(step),
         key=key_slider,
         on_change=on_slider_change,
         format=format_func,
         label_visibility="collapsed"
     )
+
     st.sidebar.markdown(f"ℹ️ {help_text}", unsafe_allow_html=True)
 
     return st.session_state[key_slider]
