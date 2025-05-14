@@ -278,7 +278,15 @@ with tab1:
         | M/F      | M, F                                  |
         | Hand     | R (mostly), L                         |
         | Visit    | 1 to 5                                 |
-    """)
+        """)
+    st.markdown("### 📊 4. Quick Stats")
+    st.markdown("""
+        - **Gender Distribution**: 213 Females, 160 Males.
+        - **Group Distribution**:
+        - Nondemented: 190 records
+        - Demented: ~70+ records
+        - Converted: Others, likely transitioning from normal to demented
+        """)
     # Download OASIS Longitudinal CSV file (local path)
     try:
         with open("oasis_longitudinal.csv", "rb") as f:
